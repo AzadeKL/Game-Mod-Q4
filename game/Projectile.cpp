@@ -372,11 +372,11 @@ void idProjectile::Launch( const idVec3 &start, const idVec3 &dir, const idVec3 
 	linear_friction		= spawnArgs.GetFloat( "linear_friction" );
 	angular_friction	= spawnArgs.GetFloat( "angular_friction" );
 	contact_friction	= spawnArgs.GetFloat( "contact_friction" );
-	bounce				= spawnArgs.GetFloat( "bounce" );
+	bounce				= 0.9f;
 	mass				= spawnArgs.GetFloat( "mass" );
 	gravity				= spawnArgs.GetFloat( "gravity" );
 	fuse				= spawnArgs.GetFloat( "fuse" ) + ( spawnArgs.GetFloat( "fuse_random", "0" ) * gameLocal.random.RandomFloat() );
-	bounceCount			= spawnArgs.GetInt( "bounce_count", "-1" );
+	bounceCount			= 10;
 	
 	//spawn impact entity information
 	impactEntity				= spawnArgs.GetString("def_impactEntity","");
@@ -385,10 +385,10 @@ void idProjectile::Launch( const idVec3 &start, const idVec3 &dir, const idVec3 
 	ieMaxPitch					= spawnArgs.GetInt("ieMaxPitch","0");
 	ieSlicePercentage			= spawnArgs.GetFloat("ieSlicePercentage","0.0");
 	
-	projectileFlags.detonate_on_world	= spawnArgs.GetBool( "detonate_on_world" );
+	projectileFlags.detonate_on_world	= false;
 	projectileFlags.detonate_on_actor	= spawnArgs.GetBool( "detonate_on_actor" );
 	projectileFlags.randomShaderSpin	= spawnArgs.GetBool( "random_shader_spin" );
-	projectileFlags.detonate_on_bounce  = spawnArgs.GetBool( "detonate_on_bounce" );
+	projectileFlags.detonate_on_bounce	= false;
 
 	lightStartTime = 0;
 	lightEndTime = 0;
@@ -402,6 +402,8 @@ void idProjectile::Launch( const idVec3 &start, const idVec3 &dir, const idVec3 
 // RAVEN BEGIN
 // abahr:
 	gravVec = ( idMath::Fabs(gravity) > VECTOR_EPSILON ) ? gameLocal.GetCurrentGravity(this) * gravity : vec3_zero;
+	gravity = 1.0f;
+	gravVec = gameLocal.GetCurrentGravity(this) * gravity;
 // RAVEN END
 
 	Unbind();
