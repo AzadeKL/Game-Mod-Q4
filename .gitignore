@@ -1,0 +1,12 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.vsidx
+*.ipch
+*.vcxproj
+*.vcxproj.filters
+Backup/
+UpgradeLog.htm
+Browse.VC.db
+Solution.VC.db
