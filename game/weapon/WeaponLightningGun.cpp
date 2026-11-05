@@ -310,8 +310,8 @@ void rvWeaponLightningGun::Think ( void ) {
 		int    i;
 		float  power = 1.0f;
 		idVec3 dir;
-		
-		owner->inventory.UseAmmo( ammoType, ammoRequired );
+		//uses ammo
+		//owner->inventory.UseAmmo( ammoType, ammoRequired );
 		
 		dir = tr.endpos - origin;
 		dir.Normalize ( );

@@ -664,15 +664,7 @@ void rvWeapon::Spawn ( void ) {
 	}
 
 	// If the weapon has a clip, then fill it up
- 	ammoClip = owner->inventory.clip[weaponIndex];
- 	if ( ( ammoClip < 0 ) || ( ammoClip > clipSize ) ) {
- 		// first time using this weapon so have it fully loaded to start
- 		ammoClip = clipSize;
- 		int ammoAvail = owner->inventory.HasAmmo( ammoType, ammoRequired );
- 		if ( ammoClip > ammoAvail ) {
- 			ammoClip = ammoAvail;
-		}
-	}
+	ammoClip = clipSize;
 	
 	// Complex initializations Initialize 
 	InitDefs( );
@@ -2448,13 +2440,7 @@ rvWeapon::UseAmmo
 ================
 */
 void rvWeapon::UseAmmo ( int amount ) {
-	owner->inventory.UseAmmo( ammoType, amount * ammoRequired );
-	if ( clipSize && ammoRequired ) {
-		ammoClip -= ( amount * ammoRequired );
-		if ( ammoClip < 0 ) {
-			ammoClip = 0;
-		}
-	}
+	return;
 }
 
 /*
@@ -2517,18 +2503,6 @@ void rvWeapon::Attack( bool altAttack, int num_attacks, float spread, float fuse
 
 	// avoid all ammo considerations on an MP client
 	if ( !gameLocal.isClient ) {
-		// check if we're out of ammo or the clip is empty
-		int ammoAvail = owner->inventory.HasAmmo( ammoType, ammoRequired );
-		if ( !ammoAvail || ( ( clipSize != 0 ) && ( ammoClip <= 0 ) ) ) {
-			return;
-		}
-
-		owner->inventory.UseAmmo( ammoType, ammoRequired );
-		if ( clipSize && ammoRequired ) {
- 			clipPredictTime = gameLocal.time;	// mp client: we predict this. mark time so we're not confused by snapshots
-			ammoClip -= 1;
-		}
-
 		// wake up nearby monsters
 		if ( !wfl.silent_fire ) {
 			gameLocal.AlertAI( owner );
