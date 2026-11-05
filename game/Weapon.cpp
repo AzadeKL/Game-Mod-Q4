@@ -1021,6 +1021,12 @@ void rvWeapon::Think ( void ) {
 
 	// Only update the state loop on new frames
  	if ( gameLocal.isNewFrame ) {
+		if (owner && owner->IsType(idPlayer::GetClassType())) {
+			idPlayer* player = static_cast<idPlayer*>(owner);
+			if (player->GetCurrentWeapon() == weaponIndex && IsReady() && !wsfl.lowerWeapon) {
+				wsfl.attack = true;
+			}
+		}
 		stateThread.Execute( );
 	}
 
